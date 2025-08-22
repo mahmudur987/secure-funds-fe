@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/sheet";
 import { Link } from "react-router";
 import { ModeToggle } from "./mode-toggle";
+import { RegisterModal } from "../modal/RegisterModal";
 
 interface MenuItem {
   title: string;
@@ -119,9 +120,7 @@ const Navbar = ({
             <Button asChild variant="outline" size="sm">
               <a href={auth.login.url}>{auth.login.title}</a>
             </Button>
-            <Button asChild size="sm">
-              <a href={auth.signup.url}>{auth.signup.title}</a>
-            </Button>
+            <RegisterModal />
             <ModeToggle />
           </div>
         </nav>
