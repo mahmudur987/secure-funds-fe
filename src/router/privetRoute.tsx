@@ -14,8 +14,6 @@ export default function PrivateRoute({ roles }: PrivateRouteProps) {
   const user = data?.data as User;
   const token = localStorage.getItem("accessToken");
 
-  console.log("data", data);
-
   if (!token) {
     // not logged in → redirect to login
     return <Navigate to="/" replace />;

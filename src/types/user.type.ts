@@ -12,6 +12,7 @@ export interface User {
   name: string;
   password: string;
   role: string;
+  email: string;
   phone: string;
   isEmailVerified: boolean;
   isPhoneVerified: boolean;
@@ -24,7 +25,7 @@ export interface User {
   _id: string;
   createdAt: string;
   updatedAt: string;
-  wallet: string | Wallet;
+  wallet: Wallet;
 }
 
 export interface Auth {

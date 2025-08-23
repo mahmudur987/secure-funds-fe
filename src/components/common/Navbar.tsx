@@ -94,9 +94,6 @@ const Navbar = ({
     signup: { title: "Sign up", url: "#" },
   },
 }: Navbar1Props) => {
-  const { data, isSuccess } = useGetProfileQuery(undefined);
-  const profile = data?.data;
-
   return (
     <section className="py-4">
       <div className="container">
@@ -123,18 +120,10 @@ const Navbar = ({
             </div>
           </div>
           <div className="flex gap-2">
-            {isSuccess && profile ? (
-              <Link to="/profile">
-                <Button variant="outline" size="sm">
-                  {profile.name}
-                </Button>
-              </Link>
-            ) : (
-              <div className="flex gap-2">
-                <LoginModal />
-                <RegisterModal />
-              </div>
-            )}
+            <div className="flex gap-2">
+              <LoginModal />
+              <RegisterModal />
+            </div>
 
             <ModeToggle />
           </div>

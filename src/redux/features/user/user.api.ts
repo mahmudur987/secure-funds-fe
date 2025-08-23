@@ -24,8 +24,19 @@ const userApi = baseApi.injectEndpoints({
         url: "/user/profile",
         method: "GET",
       }),
+      providesTags: ["User"],
+    }),
+
+    GetAllUser: build.query<IResponse<User[]>, unknown>({
+      query: (params) => ({
+        url: "/user",
+        method: "GET",
+        params,
+      }),
+      providesTags: ["User"],
     }),
   }),
 });
 
-export const { useCreateUserMutation, useGetProfileQuery } = userApi;
+export const { useCreateUserMutation, useGetProfileQuery, useGetAllUserQuery } =
+  userApi;

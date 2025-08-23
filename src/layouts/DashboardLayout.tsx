@@ -5,14 +5,18 @@ import type { User } from "@/types/user.type";
 import { Navigate, Outlet } from "react-router";
 export default function DashboardLayout() {
   const { data, isLoading } = useGetProfileQuery();
+  const token = localStorage.getItem("accessToken");
   const user = data?.data as User;
-  if (isLoading) return null;
+
+  if (isLoading) return <p>Loading...</p>;
+
+  if (!token) return <Navigate to="/" replace />;
   if (!user) return <Navigate to="/" replace />;
 
   return (
     <SidebarProvider>
-      <AppSidebar />
-      <main>
+      <AppSidebar role={user.role} />
+      <main className="flex-1">
         <SidebarTrigger />
         <Outlet />
       </main>
