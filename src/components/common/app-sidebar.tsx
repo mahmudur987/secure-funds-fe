@@ -16,7 +16,7 @@ import { Link } from "react-router";
 // Menu items.
 const items = getSidebarData("user");
 
-console.log(items);
+// console.log(items);
 
 export function AppSidebar() {
   return (
