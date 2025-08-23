@@ -5,9 +5,7 @@ import axiosBaseQuery from "./axiosBaseQuery";
 // Define a service using a base URL and expected endpoints
 export const baseApi = createApi({
   reducerPath: "baseApi",
-  baseQuery: axiosBaseQuery({
-    baseUrl: "https://example.com",
-  }),
+  baseQuery: axiosBaseQuery(),
   endpoints: () => ({}),
 });
 

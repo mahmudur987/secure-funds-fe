@@ -1,9 +1,13 @@
 import Footer from "@/components/common/Footer";
-import { ModeToggle } from "@/components/common/mode-toggle";
+
 import Navbar from "@/components/common/Navbar";
-import { Outlet } from "react-router";
+import { useGetProfileQuery } from "@/redux/features/user/user.api";
+import { Navigate, Outlet } from "react-router";
 
 const MainLayout = () => {
+  const { data, isLoading } = useGetProfileQuery(undefined);
+
+  if (!isLoading && data?.data) return <Navigate to="/dashboard" replace />;
   return (
     <main className="flex min-h-screen flex-col container mx-auto">
       <Navbar />

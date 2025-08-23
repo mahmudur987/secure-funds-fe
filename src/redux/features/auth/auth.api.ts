@@ -1,12 +1,24 @@
 import baseApi from "@/redux/baseApi";
+import type { IResponse } from "@/types";
+import type { ILogImResponse } from "@/types/user.type";
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    login: build.mutation({
+    login: build.mutation<
+      IResponse<ILogImResponse>,
+      { phone: string; password: string }
+    >({
       query: (credentials) => ({
-        url: "/login",
+        url: "/auth/login",
         method: "POST",
-        body: credentials,
+        data: credentials,
+      }),
+    }),
+
+    logout: build.mutation<IResponse<ILogImResponse>, void>({
+      query: () => ({
+        url: "/auth/logout",
+        method: "POST",
       }),
     }),
   }),

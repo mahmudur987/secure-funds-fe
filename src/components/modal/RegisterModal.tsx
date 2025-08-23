@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -20,6 +19,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormDescription,
   FormMessage,
 } from "../ui/form";
 import {
@@ -29,17 +29,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { useCreateUserMutation } from "@/redux/features/user/user.api";
+import { toast } from "sonner";
+import type { IErrorResponse } from "@/types";
+import { useState } from "react";
 
 export function RegisterModal() {
+  const [signup, { isLoading }] = useCreateUserMutation();
+  const [openModal, setOpenModal] = useState(false);
   const formSchema = z
     .object({
-      username: z.string().min(2, {
+      name: z.string().min(2, {
         message: "Username must be at least 2 characters.",
       }),
-      phoneNumber: z.string().min(10, {
+      phone: z.string().min(10, {
         message: "Phone number must be at least 10 digits.",
       }),
-      role: z.enum(["admin", "agent", "user"]),
+      role: z.enum(["ADMIN", "AGENT", "USER"]),
       password: z
         .string()
         .min(8, { message: "Password must be at least 8 characters." })
@@ -65,20 +71,35 @@ export function RegisterModal() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
-      phoneNumber: "",
+      name: "",
+      phone: "",
       password: "",
       confirmPassword: "",
     },
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const { name, phone, role, password } = values;
+    try {
+      const res = await signup({ name, phone, role, password }).unwrap();
+      console.log(res);
+
+      if (res.success) {
+        toast.success(res.message);
+        toast.success(
+          "Wallet created successfully. Your wallet status is pending, please wait for approval."
+        );
+        setOpenModal(false);
+      }
+    } catch (error: unknown | IErrorResponse) {
+      console.log(error);
+      toast.error((error as IErrorResponse).data.message);
+    }
+  };
 
   return (
-    <Dialog>
+    <Dialog open={openModal} onOpenChange={setOpenModal}>
       <DialogTrigger asChild>
         <Button size="sm">Sign up</Button>
       </DialogTrigger>
@@ -96,7 +117,7 @@ export function RegisterModal() {
             >
               <FormField
                 control={form.control}
-                name="username"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Username</FormLabel>
@@ -111,7 +132,7 @@ export function RegisterModal() {
 
               <FormField
                 control={form.control}
-                name="phoneNumber"
+                name="phone"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Phone number</FormLabel>
@@ -139,18 +160,17 @@ export function RegisterModal() {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a verified email to display" />
+                          <SelectValue placeholder="Select a role" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {["admin", "agent", "user"].map((role) => (
+                        {["ADMIN", "AGENT", "USER"].map((role) => (
                           <SelectItem key={role} value={role}>
                             {role}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
-
                     <FormMessage />
                   </FormItem>
                 )}
@@ -193,7 +213,7 @@ export function RegisterModal() {
             <Button variant="outline">Cancel</Button>
           </DialogClose>
           <Button form="form" type="submit">
-            Save changes
+            {isLoading ? "Loading..." : "Save changes"}
           </Button>
         </DialogFooter>
       </DialogContent>

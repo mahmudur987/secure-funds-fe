@@ -1,13 +1,13 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://some-domain.com/api/",
+  baseURL: "http://localhost:5000/api/v1",
   timeout: 1000,
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     if (token) {
       config.headers.Authorization = `${token}`;
     }

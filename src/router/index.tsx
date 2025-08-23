@@ -13,6 +13,7 @@ import { adminSidebarData } from "./AdminRoute";
 import { agentSidebarData } from "./AgentRoute";
 import PrivateRoute from "./privetRoute";
 import { Role } from "@/constant";
+import UserHome from "@/pages/users/UserHome";
 
 const router = createBrowserRouter([
   {
@@ -57,14 +58,22 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: "a",
+            element: <UserHome />,
           },
 
           ...getRoutes(userSidebarData),
         ],
       },
-      { path: "admin", children: getRoutes(adminSidebarData) },
-      { path: "agent", children: getRoutes(agentSidebarData) },
+      {
+        path: "admin",
+        element: <PrivateRoute roles={[Role.admin]} />,
+        children: getRoutes(adminSidebarData),
+      },
+      {
+        path: "agent",
+        element: <PrivateRoute roles={[Role.agent]} />,
+        children: getRoutes(agentSidebarData),
+      },
     ],
   },
 

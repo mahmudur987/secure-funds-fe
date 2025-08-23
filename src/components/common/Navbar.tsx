@@ -25,6 +25,9 @@ import {
 import { Link } from "react-router";
 import { ModeToggle } from "./mode-toggle";
 import { RegisterModal } from "../modal/RegisterModal";
+import { LoginModal } from "../modal/LoginModal";
+import { use } from "react";
+import { useGetProfileQuery } from "@/redux/features/user/user.api";
 
 interface MenuItem {
   title: string;
@@ -91,6 +94,9 @@ const Navbar = ({
     signup: { title: "Sign up", url: "#" },
   },
 }: Navbar1Props) => {
+  const { data, isSuccess } = useGetProfileQuery(undefined);
+  const profile = data?.data;
+
   return (
     <section className="py-4">
       <div className="container">
@@ -117,10 +123,19 @@ const Navbar = ({
             </div>
           </div>
           <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm">
-              <a href={auth.login.url}>{auth.login.title}</a>
-            </Button>
-            <RegisterModal />
+            {isSuccess && profile ? (
+              <Link to="/profile">
+                <Button variant="outline" size="sm">
+                  {profile.name}
+                </Button>
+              </Link>
+            ) : (
+              <div className="flex gap-2">
+                <LoginModal />
+                <RegisterModal />
+              </div>
+            )}
+
             <ModeToggle />
           </div>
         </nav>
