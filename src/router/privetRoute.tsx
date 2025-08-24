@@ -1,29 +1,42 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect } from "react";
+import { useNavigate, Outlet } from "react-router";
 import { useGetProfileQuery } from "@/redux/features/user/user.api";
 import type { User } from "@/types/user.type";
-import { Navigate, Outlet } from "react-router";
-// import { useSelector } from "react-redux";
-// import { RootState } from "@/store"; // adjust import for your store
 
-interface PrivateRouteProps {
-  roles: string[]; // allowed roles (optional)
-}
+type PrivateRouteProps = {
+  roles?: string[];
+};
 
 export default function PrivateRoute({ roles }: PrivateRouteProps) {
-  const { data, isLoading } = useGetProfileQuery(undefined);
-  const user = data?.data as User;
+  const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
 
-  if (!token) {
-    // not logged in → redirect to login
-    return <Navigate to="/" replace />;
-  }
+  const { data, isLoading, isError } = useGetProfileQuery(undefined);
 
-  if (roles && !isLoading && !roles.includes(user.role)) {
-    // role not allowed → redirect unauthorized
-    return <Navigate to="/unauthorized" replace />;
-  }
+  useEffect(() => {
+    if (!token) {
+      navigate("/", { replace: true }); // not logged in → login
+      return;
+    }
 
-  // ✅ allowed → render children routes
+    if (!isLoading) {
+      if (isError || !data?.data) {
+        // failed to fetch profile → logout
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        navigate("/", { replace: true });
+      } else if (roles && !roles.includes((data.data as User).role)) {
+        // role not allowed → unauthorized
+
+        console.log((data.data as User).role);
+        console.log(roles);
+
+        navigate("/unauthorized", { replace: true });
+      }
+    }
+  }, [token, isLoading, isError, data, roles, navigate]);
+
+  if (isLoading) return <p>Loading...</p>;
+
   return <Outlet />;
 }

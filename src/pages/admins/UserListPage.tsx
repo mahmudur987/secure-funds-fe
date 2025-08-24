@@ -23,7 +23,10 @@ import type { User } from "@/types/user.type";
 import { useUpdateWalletMutation } from "@/redux/features/wallet/walletApi";
 
 export default function UserListPage() {
-  const { data, isLoading, isSuccess } = useGetAllUserQuery({ role: "USER" });
+  const { data, isLoading, isSuccess } = useGetAllUserQuery({
+    role: "USER",
+    populate: "wallet",
+  });
   // const [updateUserStatus] = useUpdateUserStatusMutation();
   const [updateWallet, { isLoading: isUpdatingWallet }] =
     useUpdateWalletMutation();
@@ -46,7 +49,7 @@ export default function UserListPage() {
     }
   };
   if (isLoading) return <LoadingSpinner />;
-
+  console.log(users);
   return (
     <>
       {isSuccess && (
@@ -59,9 +62,10 @@ export default function UserListPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
+
                   <TableHead>Phone</TableHead>
                   <TableHead>Role</TableHead>
+                  <TableHead>Address</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Wallet Balance</TableHead>
                   <TableHead>Wallet Status</TableHead>
@@ -71,9 +75,10 @@ export default function UserListPage() {
                 {users.map((user) => (
                   <TableRow key={user._id}>
                     <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
+
                     <TableCell>{user.phone}</TableCell>
                     <TableCell>{user.role}</TableCell>
+                    <TableCell>{user.address}</TableCell>
 
                     {/* User Status Dropdown */}
                     <TableCell>

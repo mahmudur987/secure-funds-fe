@@ -73,7 +73,7 @@ export function AppSidebar() {
                   <SidebarMenuItem key="Log Out">
                     <SidebarMenuButton asChild>
                       <Button variant="outline" onClick={handleLogOut}>
-                        Log Out
+                        Log Out -{data?.data.phone}
                       </Button>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

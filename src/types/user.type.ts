@@ -14,6 +14,7 @@ export interface User {
   role: string;
   email: string;
   phone: string;
+  address: string;
   isEmailVerified: boolean;
   isPhoneVerified: boolean;
   status: string;

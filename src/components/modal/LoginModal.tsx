@@ -27,11 +27,12 @@ import type { IErrorResponse } from "@/types";
 import { useState } from "react";
 import { useLoginMutation } from "@/redux/features/auth/auth.api";
 import { useNavigate } from "react-router";
+import { useGetProfileQuery } from "@/redux/features/user/user.api";
 
 export function LoginModal() {
   const [login, { isLoading }] = useLoginMutation();
   const [openModal, setOpenModal] = useState(false);
-
+  const { refetch } = useGetProfileQuery();
   const navigate = useNavigate();
 
   const formSchema = z.object({
@@ -47,15 +48,14 @@ export function LoginModal() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      phone: "",
-      password: "",
+      phone: "01712345611",
+      password: "A@1234567",
     },
   });
 
   // 2. Define a submit handler.
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { password, phone } = values;
-    console.log({ phone, password });
     try {
       const res = await login({ phone, password }).unwrap();
       console.log(res);
@@ -72,6 +72,12 @@ export function LoginModal() {
           );
           setOpenModal(false);
         } else {
+          localStorage.setItem("accessToken", res.data.accessToken);
+          localStorage.setItem("refreshToken", res.data.refreshToken);
+          toast.success(res.message);
+          setOpenModal(false);
+
+          refetch();
           if (res.data.user.role === "USER") {
             navigate("/dashboard/user");
           } else if (res.data.user.role === "ADMIN") {
@@ -79,10 +85,6 @@ export function LoginModal() {
           } else if (res.data.user.role === "AGENT") {
             navigate("/dashboard/agent");
           }
-          localStorage.setItem("accessToken", res.data.accessToken);
-          localStorage.setItem("refreshToken", res.data.refreshToken);
-          toast.success(res.message);
-          setOpenModal(false);
         }
       }
     } catch (error: unknown | IErrorResponse) {
@@ -116,6 +118,8 @@ export function LoginModal() {
                     <FormLabel>Phone number</FormLabel>
                     <FormControl>
                       <Input
+                        autoComplete="tel"
+                        defaultValue={field.value}
                         type="tel"
                         placeholder=" 123-456-7890"
                         {...field}
@@ -133,7 +137,11 @@ export function LoginModal() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" {...field} />
+                      <Input
+                        defaultValue={field.value}
+                        type="password"
+                        {...field}
+                      />
                     </FormControl>
 
                     <FormMessage />

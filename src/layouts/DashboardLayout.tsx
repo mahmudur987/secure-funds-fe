@@ -14,12 +14,14 @@ export default function DashboardLayout() {
   if (!user) return <Navigate to="/" replace />;
 
   return (
-    <SidebarProvider>
-      <AppSidebar role={user.role} />
-      <main className="flex-1">
-        <SidebarTrigger />
-        <Outlet />
-      </main>
-    </SidebarProvider>
+    <main className="container mx-auto min-h-screen">
+      <SidebarProvider>
+        <AppSidebar role={user.role} />
+        <main className="flex-1">
+          <SidebarTrigger />
+          <Outlet />
+        </main>
+      </SidebarProvider>
+    </main>
   );
 }
