@@ -13,7 +13,6 @@ import { adminSidebarData } from "./AdminRoute";
 import { agentSidebarData } from "./AgentRoute";
 import PrivateRoute from "./privetRoute";
 import { Role } from "@/constant";
-import UserHome from "@/pages/users/UserHome";
 
 import DashboardRedirect from "./DashboardRedirect";
 import Unauthorized from "@/pages/UnaAthorized";
@@ -62,18 +61,12 @@ const router = createBrowserRouter([
         element: <DashboardRedirect />,
       },
 
-      // nested dashboards
       {
         path: "user",
         element: <PrivateRoute roles={[Role.user]} />,
-        children: [
-          {
-            index: true,
-            element: <UserHome />,
-          },
-          ...getRoutes(userSidebarData),
-        ],
+        children: getRoutes(userSidebarData),
       },
+
       {
         path: "admin",
         element: <PrivateRoute roles={[Role.admin]} />,

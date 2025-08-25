@@ -5,15 +5,7 @@ import TransactionAllPage from "@/pages/admins/TransactionAllPage";
 import UserListPage from "@/pages/admins/UserListPage";
 import ProfilePage from "@/pages/ProfilePage";
 import type { RouteItem } from "@/types/route.type";
-import {
-  Home,
-  Wallet,
-  Users,
-  Settings,
-  List,
-  BarChart,
-  UserCog,
-} from "lucide-react";
+import { Home, Users, Settings, List, BarChart, UserCog } from "lucide-react";
 
 /* ADMIN DASHBOARD MENU */
 export const adminSidebarData: RouteItem[] = [

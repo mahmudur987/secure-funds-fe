@@ -17,7 +17,7 @@ const DashboardRedirect = () => {
 
   const user = data?.data;
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   switch (user.role) {

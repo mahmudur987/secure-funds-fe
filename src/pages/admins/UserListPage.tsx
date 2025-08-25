@@ -33,7 +33,7 @@ export default function UserListPage() {
     useUpdateWalletMutation();
 
   const users: User[] = data?.data || [];
-  const updateUserStatus = async (data: any) => {
+  const updateUserStatus = async () => {
     toast.success("this is under development");
   };
   const updateWalletStatus = async (data: { id: string; status: string }) => {
@@ -92,9 +92,11 @@ export default function UserListPage() {
                     <TableCell>
                       <Select
                         defaultValue={user.status}
-                        onValueChange={(value) =>
-                          updateUserStatus({ id: user._id, status: value })
-                        }
+                        onValueChange={(value) => {
+                          updateUserStatus();
+
+                          console.log(value);
+                        }}
                       >
                         <SelectTrigger className="w-[130px]">
                           <SelectValue placeholder="Select Status" />
