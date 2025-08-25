@@ -1,4 +1,5 @@
 import { AppSidebar } from "@/components/common/app-sidebar";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useGetProfileQuery } from "@/redux/features/user/user.api";
 import type { User } from "@/types/user.type";
@@ -8,7 +9,7 @@ export default function DashboardLayout() {
   const token = localStorage.getItem("accessToken");
   const user = data?.data as User;
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <LoadingSpinner />;
 
   if (!token) return <Navigate to="/" replace />;
   if (!user) return <Navigate to="/" replace />;

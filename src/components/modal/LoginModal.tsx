@@ -72,24 +72,19 @@ export function LoginModal() {
           );
           setOpenModal(false);
         } else {
-          localStorage.setItem("accessToken", res.data.accessToken);
-          localStorage.setItem("refreshToken", res.data.refreshToken);
+          localStorage.setItem("accessToken", res?.data?.accessToken);
+          localStorage.setItem("refreshToken", res?.data?.refreshToken);
           toast.success(res.message);
-          setOpenModal(false);
-
           refetch();
-          if (res.data.user.role === "USER") {
-            navigate("/dashboard/user");
-          } else if (res.data.user.role === "ADMIN") {
-            navigate("/dashboard/admin");
-          } else if (res.data.user.role === "AGENT") {
-            navigate("/dashboard/agent");
-          }
+          navigate("/dashboard");
+          setOpenModal(false);
         }
       }
     } catch (error: unknown | IErrorResponse) {
       console.log(error);
-      toast.error((error as IErrorResponse).data.message);
+      toast.error(
+        (error as IErrorResponse).data.message || "Something went wrong."
+      );
     }
   };
 

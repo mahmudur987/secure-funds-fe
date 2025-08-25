@@ -7,7 +7,6 @@ import { Navigate, Outlet } from "react-router";
 const MainLayout = () => {
   const { data, isLoading } = useGetProfileQuery(undefined);
   const token = localStorage.getItem("accessToken");
-  console.log(data);
 
   if (token && !isLoading && data?.data)
     return <Navigate to="/dashboard" replace />;

@@ -38,7 +38,7 @@ export function AppSidebar() {
 
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    navigate("/", { replace: true }); // 👈 redirect to home
+    navigate("/"); // 👈 redirect to home
   };
 
   if (isError) {
