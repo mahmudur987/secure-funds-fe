@@ -1,6 +1,10 @@
 import baseApi from "@/redux/baseApi";
 import type { IResponse } from "@/types";
-import type { CreateUserResponse, User } from "@/types/user.type";
+import type {
+  CreateUserResponse,
+  ILogImResponse,
+  User,
+} from "@/types/user.type";
 
 const userApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -26,6 +30,16 @@ const userApi = baseApi.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
+    UpdateUserProfile: build.mutation<IResponse<ILogImResponse>, Partial<User>>(
+      {
+        query: (data) => ({
+          url: "/user/profile",
+          method: "PATCH",
+          data,
+        }),
+        invalidatesTags: ["User"],
+      }
+    ),
 
     GetAllUser: build.query<IResponse<User[]>, unknown>({
       query: (params) => ({
@@ -38,5 +52,9 @@ const userApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateUserMutation, useGetProfileQuery, useGetAllUserQuery } =
-  userApi;
+export const {
+  useCreateUserMutation,
+  useGetProfileQuery,
+  useGetAllUserQuery,
+  useUpdateUserProfileMutation,
+} = userApi;

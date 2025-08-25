@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { Link } from "react-router";
+
 import {
   Send,
   Phone,
@@ -22,11 +22,16 @@ import { SendMoneyModal } from "@/components/modal/SendMoneyModal";
 import { useState } from "react";
 import { CashOutModal } from "@/components/modal/CashOutModal";
 import { toast } from "sonner";
+import { CashInModal } from "@/components/modal/CashInModal";
 
 const actions = [
-  { title: "Send Money", icon: Send, link: "/dashboard/user/send-money" },
+  { title: "Cash In", icon: Send, link: "/dashboard/user/cashIn" },
   { title: "Mobile Recharge", icon: Phone, link: "/dashboard/user/recharge" },
-  { title: "Cash Out", icon: Wallet, link: "/dashboard/user/cashout" },
+  {
+    title: "Cash Transfer",
+    icon: Wallet,
+    link: "/dashboard/user/cashTransfer",
+  },
   {
     title: "Make Payment",
     icon: ShoppingCart,
@@ -46,9 +51,9 @@ const actions = [
   { title: "Donation", icon: HeartHandshake, link: "/dashboard/user/donation" },
 ];
 
-export default function QuickActions() {
+export default function AgentQuickActions() {
   const [openSendMoneyModal, setOpenSendMoneyModal] = useState(false);
-  const [openCashOutModal, setOpenCashOutModal] = useState(false);
+  const [openCashInModal, setOpenCashInModal] = useState(false);
 
   const handleActionClick = (link: string) => {
     console.log(link);
@@ -56,8 +61,8 @@ export default function QuickActions() {
       setOpenSendMoneyModal(true);
     }
 
-    if (link === "/dashboard/user/cashout") {
-      setOpenCashOutModal(true);
+    if (link === "/dashboard/user/cashIn") {
+      setOpenCashInModal(true);
     } else {
       toast.error("Under Development");
     }
@@ -81,13 +86,10 @@ export default function QuickActions() {
           </div>
         ))}
       </div>
-      <SendMoneyModal
-        openModal={openSendMoneyModal}
-        setOpenModal={setOpenSendMoneyModal}
-      />
-      <CashOutModal
-        openModal={openCashOutModal}
-        setOpenModal={setOpenCashOutModal}
+
+      <CashInModal
+        openModal={openCashInModal}
+        setOpenModal={setOpenCashInModal}
       />
     </>
   );

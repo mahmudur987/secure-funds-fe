@@ -3,11 +3,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set, z } from "zod";
+import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -23,18 +22,17 @@ import type { IErrorResponse } from "@/types";
 
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
-import { useSendMoneyMutation } from "@/redux/features/transaction/transaction.api";
+import { useCashOutMutation } from "@/redux/features/transaction/transaction.api";
 import { useGetProfileQuery } from "@/redux/features/user/user.api";
-import { fi } from "date-fns/locale";
-import { transactionFeeToUser } from "@/constant";
+import { transactionFeeToAgent } from "@/constant";
 
-export interface ISendMoneyForm {
+export interface ICashOutForm {
   phoneNumber: string;
   amount: number;
   note: string;
 }
 
-const sendMoneySchema = z.object({
+const CashOutSchema = z.object({
   phoneNumber: z
     .string()
     .min(10, { message: "Phone number must be at least 10 digits." }),
@@ -42,18 +40,18 @@ const sendMoneySchema = z.object({
   note: z.string().optional(),
 });
 
-export function SendMoneyModal({
+export function CashOutModal({
   openModal,
   setOpenModal,
 }: {
   openModal: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [sendMoney] = useSendMoneyMutation();
+  const [sendMoney] = useCashOutMutation();
   const { data, refetch } = useGetProfileQuery();
 
-  const form = useForm<z.infer<typeof sendMoneySchema>>({
-    resolver: zodResolver(sendMoneySchema),
+  const form = useForm<z.infer<typeof CashOutSchema>>({
+    resolver: zodResolver(CashOutSchema),
     defaultValues: {
       phoneNumber: "",
       amount: 0,
@@ -63,7 +61,7 @@ export function SendMoneyModal({
 
   const { handleSubmit, reset } = form;
 
-  const onSubmit = async (values: z.infer<typeof sendMoneySchema>) => {
+  const onSubmit = async (values: z.infer<typeof CashOutSchema>) => {
     if (data?.data.phone === values.phoneNumber) {
       toast.error("You can't send money to yourself");
       return;
@@ -71,7 +69,7 @@ export function SendMoneyModal({
 
     try {
       const data = {
-        transactionType: "Send-Money",
+        transactionType: "CashOut",
         amount: values.amount,
         toUserPhone: values.phoneNumber,
         description: values.note,
@@ -94,7 +92,7 @@ export function SendMoneyModal({
     <Dialog open={openModal} onOpenChange={setOpenModal}>
       <DialogContent className="w-full max-w-md p-4">
         <DialogHeader>
-          <DialogTitle className="text-center">Send Money</DialogTitle>
+          <DialogTitle className="text-center">Cash Out</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -104,7 +102,7 @@ export function SendMoneyModal({
               name="phoneNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel> Phone number</FormLabel>
+                  <FormLabel>Agent Phone number</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="tel"
@@ -136,7 +134,7 @@ export function SendMoneyModal({
                   <FormMessage />
                   <FormDescription>
                     <span className="font-semibold text-red-400 pr-2">
-                      {field.value + field.value * transactionFeeToUser}
+                      {field.value + field.value * transactionFeeToAgent}
                     </span>
                     {"taka "}
                     deducted from your wallet

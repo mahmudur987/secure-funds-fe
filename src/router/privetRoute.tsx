@@ -5,9 +5,10 @@ import type { User } from "@/types/user.type";
 
 type PrivateRouteProps = {
   roles?: string[];
+  children?: React.ReactNode;
 };
 
-export default function PrivateRoute({ roles }: PrivateRouteProps) {
+export default function PrivateRoute({ roles, children }: PrivateRouteProps) {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
 
@@ -38,5 +39,5 @@ export default function PrivateRoute({ roles }: PrivateRouteProps) {
 
   if (isLoading) return <p>Loading...</p>;
 
-  return <Outlet />;
+  return <>{children || <Outlet />}</>;
 }

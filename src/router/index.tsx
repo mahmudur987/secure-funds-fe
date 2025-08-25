@@ -14,6 +14,9 @@ import { agentSidebarData } from "./AgentRoute";
 import PrivateRoute from "./privetRoute";
 import { Role } from "@/constant";
 import UserHome from "@/pages/users/UserHome";
+import AdminHome from "@/pages/admins/AdminHome";
+import AgentDashboard from "@/pages/agents/AgentDashboard";
+import DashboardRedirect from "./DashboardRedirect";
 
 const router = createBrowserRouter([
   {
@@ -50,18 +53,14 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <DashboardLayout />,
-
     children: [
+      // user
       {
-        path: "/dashboard",
-        element: <PrivateRoute roles={[Role.user]} />,
-        children: [
-          {
-            index: true,
-            element: <UserHome />,
-          },
-        ],
+        index: true, // <-- default landing for /dashboard
+        element: <DashboardRedirect />,
       },
+
+      // nested dashboards
       {
         path: "user",
         element: <PrivateRoute roles={[Role.user]} />,
@@ -70,7 +69,6 @@ const router = createBrowserRouter([
             index: true,
             element: <UserHome />,
           },
-
           ...getRoutes(userSidebarData),
         ],
       },
@@ -86,7 +84,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-
   {
     path: "*",
     element: <div>404</div>,
