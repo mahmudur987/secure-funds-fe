@@ -16,17 +16,19 @@ import { Button } from "../ui/button";
 import { useLogoutMutation } from "@/redux/features/auth/auth.api";
 import { useGetProfileQuery } from "@/redux/features/user/user.api";
 import LoadingSpinner from "./LoadingSpinner";
+import type { RouteItem } from "@/types/route.type";
+import ErrorState from "./ErrorComponent";
 
 // Menu items.
 
 // console.log(items);
 
 export function AppSidebar() {
-  const { data, isLoading } = useGetProfileQuery();
+  const { data, isLoading, isError } = useGetProfileQuery();
 
   const navigate = useNavigate();
   const [logOut] = useLogoutMutation();
-  const items = getSidebarData(data?.data.role as string);
+  const items = getSidebarData(data?.data.role as string) as RouteItem[];
 
   // console.log(items);
 
@@ -38,6 +40,11 @@ export function AppSidebar() {
     localStorage.removeItem("refreshToken");
     navigate("/", { replace: true }); // 👈 redirect to home
   };
+
+  if (isError) {
+    return <ErrorState />;
+  }
+
   return (
     <Sidebar>
       <SidebarContent>

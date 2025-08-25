@@ -3,11 +3,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set, z } from "zod";
+import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -25,7 +24,7 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useSendMoneyMutation } from "@/redux/features/transaction/transaction.api";
 import { useGetProfileQuery } from "@/redux/features/user/user.api";
-import { fi } from "date-fns/locale";
+
 import { transactionFeeToUser } from "@/constant";
 
 export interface ISendMoneyForm {

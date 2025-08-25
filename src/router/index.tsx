@@ -14,9 +14,11 @@ import { agentSidebarData } from "./AgentRoute";
 import PrivateRoute from "./privetRoute";
 import { Role } from "@/constant";
 import UserHome from "@/pages/users/UserHome";
-import AdminHome from "@/pages/admins/AdminHome";
-import AgentDashboard from "@/pages/agents/AgentDashboard";
+
 import DashboardRedirect from "./DashboardRedirect";
+import Unauthorized from "@/pages/UnaAthorized";
+import NotFound from "@/components/common/NotFound";
+import UnderMaintenance from "@/pages/UnderMaintenance";
 
 const router = createBrowserRouter([
   {
@@ -82,11 +84,21 @@ const router = createBrowserRouter([
         element: <PrivateRoute roles={[Role.agent]} />,
         children: getRoutes(agentSidebarData),
       },
+
+      {
+        path: "*",
+        element: <UnderMaintenance />,
+      },
     ],
+  },
+
+  {
+    path: "/unauthorized",
+    element: <Unauthorized />,
   },
   {
     path: "*",
-    element: <div>404</div>,
+    element: <NotFound />,
   },
 ]);
 

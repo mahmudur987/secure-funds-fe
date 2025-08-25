@@ -16,7 +16,7 @@ export default function DashboardLayout() {
   return (
     <main className="container mx-auto min-h-screen">
       <SidebarProvider>
-        <AppSidebar role={user.role} />
+        <AppSidebar />
         <main className="flex-1">
           <SidebarTrigger />
           <Outlet />

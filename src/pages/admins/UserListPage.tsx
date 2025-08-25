@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+
 import {
   Select,
   SelectContent,
@@ -21,9 +21,10 @@ import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { toast } from "sonner";
 import type { User } from "@/types/user.type";
 import { useUpdateWalletMutation } from "@/redux/features/wallet/walletApi";
+import ErrorState from "@/components/common/ErrorComponent";
 
 export default function UserListPage() {
-  const { data, isLoading, isSuccess } = useGetAllUserQuery({
+  const { data, isLoading, isSuccess, isError, error } = useGetAllUserQuery({
     role: "USER",
     populate: "wallet",
   });
@@ -49,7 +50,14 @@ export default function UserListPage() {
     }
   };
   if (isLoading) return <LoadingSpinner />;
-  console.log(users);
+  if (isError) {
+    const errorMessage =
+      typeof error === "object" && error !== null && "message" in error
+        ? String((error as { message: unknown }).message)
+        : "An unknown error occurred";
+    return <ErrorState title="Error" message={errorMessage} />;
+  }
+
   return (
     <>
       {isSuccess && (

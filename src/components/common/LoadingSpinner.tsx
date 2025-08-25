@@ -1,6 +1,12 @@
-const LoadingSpinner = () => {
+// components/common/LoadingSpinner.tsx
+import { Loader2 } from "lucide-react";
+
+const LoadingSpinner = ({ text = "Loading..." }: { text?: string }) => {
   return (
-    <div className="animate-spin h-5 w-5 border-b-2 border-gray-900 rounded-full" />
+    <div className="flex flex-col items-center justify-center min-h-[200px]">
+      <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
+      <p className="mt-3 text-gray-600 font-medium">{text}</p>
+    </div>
   );
 };
 

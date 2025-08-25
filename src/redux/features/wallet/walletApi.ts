@@ -1,4 +1,6 @@
 import baseApi from "@/redux/baseApi";
+import type { IResponse } from "@/types";
+import type { Wallet } from "@/types/user.type";
 
 const walletApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({

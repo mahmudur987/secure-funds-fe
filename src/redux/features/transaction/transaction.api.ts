@@ -11,6 +11,13 @@ const transactionApi = baseApi.injectEndpoints({
         params,
       }),
     }),
+    GetAllTransaction: builder.query<IResponse<ITransaction[]>, unknown>({
+      query: (params) => ({
+        url: "/transaction",
+        method: "GET",
+        params,
+      }),
+    }),
 
     SendMoney: builder.mutation<IResponse<ITransaction[]>, unknown>({
       query: (data) => ({
@@ -51,4 +58,5 @@ export const {
   useCashOutMutation,
   useCashInMutation,
   useAddMoneyMutation,
+  useGetAllTransactionQuery,
 } = transactionApi;

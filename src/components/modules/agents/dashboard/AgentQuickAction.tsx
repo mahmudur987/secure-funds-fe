@@ -18,9 +18,9 @@ import {
   Globe,
   HeartHandshake,
 } from "lucide-react";
-import { SendMoneyModal } from "@/components/modal/SendMoneyModal";
+
 import { useState } from "react";
-import { CashOutModal } from "@/components/modal/CashOutModal";
+
 import { toast } from "sonner";
 import { CashInModal } from "@/components/modal/CashInModal";
 
@@ -52,14 +52,10 @@ const actions = [
 ];
 
 export default function AgentQuickActions() {
-  const [openSendMoneyModal, setOpenSendMoneyModal] = useState(false);
   const [openCashInModal, setOpenCashInModal] = useState(false);
 
   const handleActionClick = (link: string) => {
     console.log(link);
-    if (link === "/dashboard/user/send-money") {
-      setOpenSendMoneyModal(true);
-    }
 
     if (link === "/dashboard/user/cashIn") {
       setOpenCashInModal(true);

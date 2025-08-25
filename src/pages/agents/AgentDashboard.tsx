@@ -1,7 +1,6 @@
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import AgentQuickActions from "@/components/modules/agents/dashboard/AgentQuickAction";
 import OffersSlider from "@/components/modules/users/home/OffersSlider";
-import QuickActions from "@/components/modules/users/home/QuickActions";
 import RecentTransactions from "@/components/modules/users/home/RecentTransactions";
 import WalletBalance from "@/components/modules/users/home/WalletBalance";
 import { useGetTransactionQuery } from "@/redux/features/transaction/transaction.api";

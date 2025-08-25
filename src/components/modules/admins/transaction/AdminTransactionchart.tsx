@@ -1,15 +1,7 @@
-import { useGetTransactionQuery } from "@/redux/features/transaction/transaction.api";
+import { useGetAllTransactionQuery } from "@/redux/features/transaction/transaction.api";
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
 import { type DateRange } from "react-day-picker";
@@ -30,20 +22,18 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import AdminCommissionByDate from "./AdminCommissionByDate";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
+import ErrorState from "@/components/common/ErrorComponent";
 
-import CommissionByDate from "@/components/modules/agents/transection/CommissionByDate";
-
-function TransactionChart() {
+function AdminTransactionChart() {
   // filters
-  const [transactionType, setTransactionType] = useState<string>("");
-  const [search, setSearch] = useState<string>("");
+
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
-  const [page, setPage] = useState(1);
-  const { data, isLoading, isSuccess } = useGetTransactionQuery({
-    limit: 20,
-    page: page,
-    transactionType: transactionType,
-    searchTerm: search,
+
+  const { data, isLoading, isSuccess, isError } = useGetAllTransactionQuery({
+    limit: 1000000000000000000000,
+
     startDate: dateRange?.from,
     endDate: dateRange?.to,
   });
@@ -63,38 +53,19 @@ function TransactionChart() {
     transactionType: type,
     commissionAmount: value,
   }));
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  if (isError) {
+    return <ErrorState />;
+  }
   return (
     <section className="space-y-6 mx-3 bg-pink-100 p-3 rounded-2xl ">
       <Card>
         <CardContent>
           {/* Filters */}
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            {/* Search */}
-            <Input
-              placeholder="Search by transaction id"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-48"
-            />
-
-            {/* Transaction Type */}
-            <Select
-              onValueChange={(val) =>
-                setTransactionType(val === "all" ? "" : val)
-              }
-              value={transactionType}
-            >
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="Filter by type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="Send-Money">Send Money</SelectItem>
-                <SelectItem value="CashIn">Cash In</SelectItem>
-                <SelectItem value="CashOut">Cash Out</SelectItem>
-              </SelectContent>
-            </Select>
-
             {/* Date Range */}
             <div className="">
               <Popover>
@@ -162,7 +133,7 @@ function TransactionChart() {
             </ResponsiveContainer>
           </CardContent>
           <CardContent>
-            <CommissionByDate transactions={transactions} />
+            <AdminCommissionByDate transactions={transactions} />
           </CardContent>
         </Card>
       )}
@@ -170,4 +141,4 @@ function TransactionChart() {
   );
 }
 
-export default TransactionChart;
+export default AdminTransactionChart;

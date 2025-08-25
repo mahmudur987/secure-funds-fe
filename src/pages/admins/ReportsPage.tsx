@@ -1,5 +1,11 @@
+import AdminTransactionChart from "@/components/modules/admins/transaction/AdminTransactionchart";
+
 const ReportsPage = () => {
-  return <div>ReportsPage Component</div>;
+  return (
+    <div>
+      <AdminTransactionChart />
+    </div>
+  );
 };
 
 export default ReportsPage;

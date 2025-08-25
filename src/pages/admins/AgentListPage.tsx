@@ -7,13 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
 import {
   Select,
   SelectContent,
@@ -22,20 +16,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetAllUserQuery } from "@/redux/features/user/user.api";
-
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { toast } from "sonner";
 import type { User } from "@/types/user.type";
 import { useUpdateWalletMutation } from "@/redux/features/wallet/walletApi";
+import ErrorState from "@/components/common/ErrorComponent";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
 
 export default function AgentListPage() {
-  const [selectedAgent, setSelectedAgent] = useState<any>(null);
-  const [amount, setAmount] = useState("");
-  const [openModal, setOpenModal] = useState(false);
-  const { data, isLoading, isSuccess } = useGetAllUserQuery({
+  const { data, isLoading, isSuccess, isError } = useGetAllUserQuery({
     role: "AGENT",
     populate: "wallet",
   });
@@ -43,7 +32,7 @@ export default function AgentListPage() {
     useUpdateWalletMutation();
 
   const users: User[] = data?.data || [];
-  const updateUserStatus = async (data: any) => {
+  const updateUserStatus = async () => {
     toast.success("this is under development");
   };
   const updateWalletStatus = async (data: { id: string; status: string }) => {
@@ -59,18 +48,20 @@ export default function AgentListPage() {
       toast.error("Something went wrong");
     }
   };
-  const handleFund = (e) => {
-    e.preventDefault();
-    toast.success("this is under development");
-    setOpenModal(false);
-    if (!selectedAgent || !amount) return;
-    // fundAgent({ agentId: selectedAgent._id, amount: Number(amount) });
+  // const handleFund = (e) => {
+  //   e.preventDefault();
+  //   toast.success("this is under development");
+  //   setOpenModal(false);
+  //   if (!selectedAgent || !amount) return;
+  //   // fundAgent({ agentId: selectedAgent._id, amount: Number(amount) });
 
-    setAmount("");
-    setSelectedAgent(null);
-  };
+  //   setAmount("");
+  //   setSelectedAgent(null);
+  // };
   if (isLoading) return <LoadingSpinner />;
-
+  if (isError) {
+    <ErrorState />;
+  }
   return (
     <>
       {isSuccess && (
@@ -106,9 +97,11 @@ export default function AgentListPage() {
                     <TableCell>
                       <Select
                         defaultValue={user.status}
-                        onValueChange={(value) =>
-                          updateUserStatus({ id: user._id, status: value })
-                        }
+                        onValueChange={(value) => {
+                          updateUserStatus();
+
+                          console.log(value);
+                        }}
                       >
                         <SelectTrigger className="w-[130px]">
                           <SelectValue placeholder="Select Status" />

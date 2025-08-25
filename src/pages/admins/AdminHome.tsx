@@ -8,16 +8,48 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Users, UserCheck, Receipt, DollarSign } from "lucide-react";
-
-const data = [
-  { name: "Mon", transactions: 12 },
-  { name: "Tue", transactions: 19 },
-  { name: "Wed", transactions: 8 },
-  { name: "Thu", transactions: 15 },
-  { name: "Fri", transactions: 22 },
-];
+import { useGetAllUserQuery } from "@/redux/features/user/user.api";
+import { useGetAllTransactionQuery } from "@/redux/features/transaction/transaction.api";
+import {
+  getDailyTransactionCounts,
+  getTotalAmount,
+} from "@/utils/transactions";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
+import ErrorState from "@/components/common/ErrorComponent";
 
 export default function AdminHome() {
+  const {
+    data: users,
+    isSuccess: isUsersSuccess,
+    isLoading,
+    isError,
+    error,
+  } = useGetAllUserQuery({});
+  const userCount = users?.data.filter((user) => user.role === "USER").length;
+  const agentCount = users?.data.filter((user) => user.role === "AGENT").length;
+  const {
+    data: transactions,
+    isSuccess: isTransactionsSuccess,
+    isLoading: isTransactionLoading,
+    isError: isTransactionError,
+  } = useGetAllTransactionQuery({
+    limit: 100000000000000000000000000000000000,
+    fields: "amount",
+  });
+  const totalAmount = getTotalAmount(transactions?.data || []);
+  const data = getDailyTransactionCounts(transactions?.data || []);
+
+  if (isLoading || isTransactionLoading) return <LoadingSpinner />;
+  if (isError || isTransactionError) {
+    const errorMessage =
+      typeof error === "object" && error !== null && "message" in error
+        ? String((error as { message: unknown }).message)
+        : "An unknown error occurred";
+    return (
+      <ErrorState title="Error" message={errorMessage || "An error occurred"} />
+    );
+  }
+
   return (
     <div className="space-y-6 p-4">
       {/* Stats Cards */}
@@ -27,9 +59,11 @@ export default function AdminHome() {
             <CardTitle>Total Users</CardTitle>
             <Users className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">1,240</p>
-          </CardContent>
+          {isUsersSuccess && (
+            <CardContent>
+              <p className="text-2xl font-bold">{userCount ?? 0} </p>
+            </CardContent>
+          )}
         </Card>
 
         <Card>
@@ -38,7 +72,7 @@ export default function AdminHome() {
             <UserCheck className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">340</p>
+            <p className="text-2xl font-bold">{agentCount ?? 0}</p>
           </CardContent>
         </Card>
 
@@ -47,9 +81,14 @@ export default function AdminHome() {
             <CardTitle>Transactions</CardTitle>
             <Receipt className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">12,500</p>
-          </CardContent>
+          {isTransactionsSuccess && (
+            <CardContent>
+              <p className="text-2xl font-bold">
+                {" "}
+                {transactions?.data.length}{" "}
+              </p>
+            </CardContent>
+          )}
         </Card>
 
         <Card>
@@ -58,7 +97,7 @@ export default function AdminHome() {
             <DollarSign className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">৳4,50,000</p>
+            <p className="text-2xl font-bold">৳{totalAmount}</p>
           </CardContent>
         </Card>
       </div>
@@ -71,7 +110,7 @@ export default function AdminHome() {
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={data}>
-              <XAxis dataKey="name" />
+              <XAxis dataKey="date" />
               <YAxis />
               <Tooltip />
               <Bar

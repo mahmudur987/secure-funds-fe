@@ -1,4 +1,4 @@
-import TransactionChart from "@/components/modules/agents/transection/chart";
+import TransactionChart from "@/components/modules/agents/transaction/chart";
 
 const AgentCommission = () => {
   return <TransactionChart />;

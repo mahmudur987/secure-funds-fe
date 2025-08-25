@@ -1,20 +1,11 @@
 import ProfilePage from "@/pages/ProfilePage";
-import UserAddMoney from "@/pages/users/UserAddMoney";
+
 import UserHome from "@/pages/users/UserHome";
-import UserSendMoney from "@/pages/users/UserSendMoney";
+
 import UserTransaction from "@/pages/users/UserTransaction";
-import UserWallet from "@/pages/users/UserWallet";
-import UserWithdraw from "@/pages/users/UserWithdraw";
+
 import type { RouteItem } from "@/types/route.type";
-import {
-  Home,
-  Wallet,
-  Send,
-  ArrowDown,
-  ArrowUp,
-  Settings,
-  List,
-} from "lucide-react";
+import { Home, Settings, List } from "lucide-react";
 
 /* USER DASHBOARD MENU */
 

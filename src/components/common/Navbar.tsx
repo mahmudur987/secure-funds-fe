@@ -26,8 +26,6 @@ import { Link } from "react-router";
 import { ModeToggle } from "./mode-toggle";
 import { RegisterModal } from "../modal/RegisterModal";
 import { LoginModal } from "../modal/LoginModal";
-import { use } from "react";
-import { useGetProfileQuery } from "@/redux/features/user/user.api";
 
 interface MenuItem {
   title: string;
