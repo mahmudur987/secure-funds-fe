@@ -72,7 +72,7 @@ const Footer = ({
     url: "https://www.shadcnblocks.com",
     src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
     alt: "logo",
-    title: "Shadcnblocks.com",
+    title: "Secure Funds",
   },
   sections = defaultSections,
   description = "A collection of components for your startup business or side project.",

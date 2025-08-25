@@ -1,9 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router";
+import { LoginModal } from "@/components/modal/LoginModal";
+import { RegisterModal } from "@/components/modal/RegisterModal";
 
 export default function CallToAction() {
-  const navigate = useNavigate();
-
   return (
     <section className="py-20 bg-blue-600 dark:bg-blue-800 text-center text-white">
       <div className="max-w-4xl mx-auto px-6">
@@ -15,19 +13,8 @@ export default function CallToAction() {
           money securely.
         </p>
         <div className="flex justify-center gap-4">
-          <Button
-            onClick={() => navigate("/register")}
-            className="bg-white text-blue-600 hover:bg-gray-100"
-          >
-            Get Started
-          </Button>
-          <Button
-            onClick={() => navigate("/login")}
-            variant="outline"
-            className="border-white text-white hover:bg-white hover:text-blue-600"
-          >
-            Login
-          </Button>
+          <LoginModal />
+          <RegisterModal />
         </div>
       </div>
     </section>

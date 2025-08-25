@@ -27,7 +27,7 @@ const CoreValues = () => {
   ];
   return (
     <div className="mt-16">
-      <h2 className="text-2xl font-semibold mb-6">Our Core Values</h2>
+      <h2 className="text-4xl font-semibold mb-6">Our Core Values</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {values.map((val, idx) => (
           <Card key={idx} className="shadow-lg rounded-2xl">

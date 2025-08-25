@@ -38,9 +38,7 @@ const AdminCommissionByDate: React.FC<Props> = ({ transactions }) => {
   const chartData = Object.entries(commissionByDate)
     .map(([date, commission]) => ({ date, commission }))
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  console.log(transactions, "transactions");
-  console.log(commissionByDate, "commissionByDate");
-  console.log(chartData, "chartData");
+
   return (
     <Card>
       <CardHeader>

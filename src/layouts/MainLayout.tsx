@@ -14,7 +14,7 @@ const MainLayout = () => {
   return (
     <main className="flex min-h-screen flex-col container mx-auto">
       <Navbar />
-      <section className="flex-1 bg-pink-200">
+      <section className="flex-1 ">
         <Outlet />
       </section>
       <Footer />
