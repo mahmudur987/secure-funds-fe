@@ -25,8 +25,8 @@ const Hero = () => {
             </div>
             <div>
               <h1 className="mb-6 text-2xl font-bold tracking-tight text-pretty lg:text-5xl">
-                Secure, Fast, and Smart Digital Walle
-                <span className="text-primary">Blocks</span>
+                Secure, Fast, and Smart Digital
+                <span className="text-primary">Wallet</span>
               </h1>
               <p className="mx-auto max-w-3xl text-muted-foreground lg:text-xl">
                 Send, receive, and manage your money anytime, anywhere
