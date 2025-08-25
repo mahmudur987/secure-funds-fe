@@ -75,7 +75,7 @@ export function LoginModal() {
           localStorage.setItem("accessToken", res?.data?.accessToken);
           localStorage.setItem("refreshToken", res?.data?.refreshToken);
           toast.success(res.message);
-          refetch();
+          // await refetch();
           navigate("/dashboard");
           setOpenModal(false);
         }

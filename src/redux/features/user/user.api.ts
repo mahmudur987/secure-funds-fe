@@ -23,7 +23,7 @@ const userApi = baseApi.injectEndpoints({
         data: credentials,
       }),
     }),
-    GetProfile: build.query<IResponse<User>, void>({
+    GetProfile: build.query<IResponse<User>, unknown>({
       query: () => ({
         url: "/user/profile",
         method: "GET",

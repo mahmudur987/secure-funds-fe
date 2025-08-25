@@ -13,7 +13,6 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         data: credentials,
       }),
-      invalidatesTags: ["User"],
     }),
 
     logout: build.mutation<IResponse<ILogImResponse>, void>({

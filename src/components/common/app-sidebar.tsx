@@ -18,6 +18,8 @@ import { useGetProfileQuery } from "@/redux/features/user/user.api";
 import LoadingSpinner from "./LoadingSpinner";
 import type { RouteItem } from "@/types/route.type";
 import ErrorState from "./ErrorComponent";
+import baseApi from "@/redux/baseApi";
+import { useAppDispatch } from "@/redux/hook";
 
 // Menu items.
 
@@ -29,7 +31,7 @@ export function AppSidebar() {
   const navigate = useNavigate();
   const [logOut] = useLogoutMutation();
   const items = getSidebarData(data?.data.role as string) as RouteItem[];
-
+  const dispatch = useAppDispatch();
   // console.log(items);
 
   const handleLogOut = async () => {
@@ -38,6 +40,7 @@ export function AppSidebar() {
 
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    dispatch(baseApi.util.resetApiState());
     navigate("/"); // 👈 redirect to home
   };
 
